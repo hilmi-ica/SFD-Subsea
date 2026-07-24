@@ -6,5 +6,5 @@ This folder contains MATLAB simulation code and data for stochastic identificati
 
 * **`PFSim.m`**: Main MATLAB script for running the UAV simulation.
 * **`PFHypMC.m`**: MATLAB script for Monte Carlo simulations of hyperparameter sensitivity of the algorithm.
-* **`QuadMod.m`**: MATLAB script for Monte Carlo simulations for the algorithm's robustness analysis.
+* **`PFParMC.m`**: MATLAB script for Monte Carlo simulations for the algorithm's robustness analysis.
 
