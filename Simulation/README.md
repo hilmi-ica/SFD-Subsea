@@ -1,6 +1,6 @@
 # Simulation
 
-This folder contains MATLAB simulation code and data for stochastic identification of subsea degradation using the adaptive IMM-SMC algorithm.
+This folder contains MATLAB simulation code and data for stochastic identification of degradation using the adaptive IMM-SMC algorithm.
 
 ## Files
 
