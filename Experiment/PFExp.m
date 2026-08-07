@@ -211,7 +211,7 @@ plot(tvec, dx_err, 'LineWidth', 5, 'Color', '#36454F');
 ylabel('Increment Error', 'FontName', 'serif', 'FontSize', 14);
 yyaxis right; plot(tvec, p_norm_traj, 'LineWidth', 5, 'Color', '#2E7D32');
 ylabel('L2-Norm Parameter','FontName','serif','FontSize',14);
-legend('\delta-\Deltad', '||\theta||', 'FontName', 'serif', ...
+legend('\delta-\Deltax', '||\theta||', 'FontName', 'serif', ...
     'FontSize', 14, 'Location', 'southeast', 'Orientation', 'horizontal');
 set(gca, 'FontName', 'serif', 'FontSize', 14);
 grid on; xlim tight;
