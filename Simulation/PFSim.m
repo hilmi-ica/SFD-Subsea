@@ -223,7 +223,7 @@ nexttile(1, [1, 3]);
 plot(tvec, dx_true, 'k-', 'LineWidth', 5); hold on;
 plot(tvec, dy_obs, 'kx', 'MarkerSize', 10);
 plot(tvec, dx_est, 'LineWidth', 5, 'Color', '#0072BD');
-xlabel('Time Step'); ylabel('\Deltax');
+xlabel('Time Step'); ylabel('\Deltad');
 title('(a) Degradation Increment');
 legend('True Increment', 'Observed Increment', 'Estimated Increment');  
 grid on; set(gca, 'FontName', 'serif', 'FontSize', 14); hold off
