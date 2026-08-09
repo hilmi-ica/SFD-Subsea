@@ -233,7 +233,7 @@ nexttile(4, [1, 3]);
 plot(tvec, x_true, 'k-', 'LineWidth', 5); hold on;
 plot(tvec, y_obs, 'kx', 'MarkerSize', 10);
 plot(tvec, x_est, 'LineWidth', 5, 'Color', '#0072BD');
-xlabel('Time Step'); ylabel('x'); title('(b) Cumulative Degradation');
+xlabel('Time Step'); ylabel('d'); title('(b) Cumulative Degradation');
 legend('True Cumulation', 'Observed Cumulation', 'Estimated Cumulation'); 
 grid on; set(gca, 'FontName', 'serif', 'FontSize', 14); hold off
 
