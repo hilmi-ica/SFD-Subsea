@@ -202,7 +202,7 @@ tvec = t_cum;
 p_norm_traj = sqrt(p1_traj(:,final_model).^2 + p2_traj(:,final_model).^2);
 dx_err = dy_all - dx_est;
 
-figure('Position',[60 60 700 500]);
+figure('Position',[60 60 700 400]);
 
 % Increment error + parameter norm
 ax1 = subplot(2,1,1); yyaxis left; 
@@ -218,15 +218,9 @@ grid on; xlim tight;
 
 % Model probability
 ax2 = subplot(2,1,2);
-dtThreshold = 0.9;
-dyThreshold = 0.1;
-
-ax2 = subplot(2,1,2);
 for i = 1:N_MODELS
-    [tPlot,pPlot] = adaptiveDensify(...
-        tvec, model_hist(:,i), dtThreshold, dyThreshold);
-    plot(tPlot, pPlot, '.', 'Color', cols(i,:), 'MarkerSize', 20,...
-        'DisplayName',model_names{i}); hold on;
+    plot(tvec, model_hist(:,i), ':', 'Color', cols(i,:), 'LineWidth', 5,...
+        'DisplayName', model_names{i}); hold on;
 end
 yline(SWITCH_TAU,'k--','LineWidth',5,'DisplayName','\tau');
 ylabel('Model Probability', 'FontName', 'serif', 'FontSize', 14);
@@ -333,25 +327,5 @@ function idx = systematic_resample(weights, N_target)
     for i=1:N_target
         while j<N && cdf(j)<u(i), j=j+1; end
         idx(i)=j;
-    end
-end
-
-function [tDense, yDense] = adaptiveDensify(t, y, dtThresh, dyThresh)
-tDense = t(1); yDense = y(1);
-    for k = 2:length(t)
-        dt = t(k) - t(k-1);
-        dy = abs(y(k) - y(k-1));
-    
-        % Only densify if necessary
-        if (dt > dtThresh) || (dy > dyThresh)
-    
-            % Number of inserted points
-            n = ceil(max(dt/median(diff(t)),dy/0.05));
-            ti = linspace(t(k-1), t(k), n+2);
-            yi = interp1(t([k-1 k]), y([k-1 k]), ti, 'pchip');
-            tDense = [tDense; ti(2:end)']; yDense = [yDense; yi(2:end)'];
-        else
-            tDense = [tDense; t(k)]; yDense = [yDense; y(k)];
-        end
     end
 end
