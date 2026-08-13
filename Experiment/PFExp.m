@@ -167,19 +167,19 @@ mu_w = par_w(1); sig_w = par_w(2);
 logL_w = sum(log(normpdf(dy_all,mu_w,sig_w)));
 
 % Gamma (shifted distribution)
-shiftgampdf = @(x,a,b,xi) max(realmin,gampdf(x-xi,a,b));
+shiftgampdf = @(x,a,b,xi) max(realmin,gampdf(x+xi,a,b));
 par_g = mle(dy_all,'pdf',shiftgampdf,'start',[0.1,0,0.2]);
 alpha_g = par_g(1); beta_g = par_g(2);
 logL_g = sum(log(shiftgampdf(dy_all,alpha_g,beta_g,par_g(3))));
 
 % Inverse Gaussian (shifted distribution)
-shiftigpdf = @(x,a,b,xi) max(realmin,pdf('InverseGaussian',x-xi,a,b));
+shiftigpdf = @(x,a,b,xi) max(realmin,pdf('InverseGaussian',x+xi,a,b));
 par_ig = mle(dy_all,'pdf',shiftigpdf,'start',[0.1,0,0.2]);
 mu_ig = par_ig(1); lam_ig = par_ig(2);
 logL_ig = sum(log(shiftigpdf(dy_all, mu_ig, lam_ig,par_ig(3))));
 
 % Compound Poisson (shifted distribution)
-shiftcppdf = @(x,a,b,xi) max(realmin,cpoisson_pdf(x-xi,a,b));
+shiftcppdf = @(x,a,b,xi) max(realmin,cpoisson_pdf(x+xi,a,b));
 par_cp = mle(dy_all,'pdf',shiftcppdf,'start',[0.1,0,0.2]);
 lam_j = par_cp(1); mu_j = par_cp(2);
 logL_cp = sum(log(shiftcppdf(dy_all, lam_j, mu_j,par_cp(3))));
