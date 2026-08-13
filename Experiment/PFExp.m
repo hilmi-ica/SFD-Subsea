@@ -12,43 +12,6 @@ valid = dT_all > 0;
 dT_all = dT_all(valid); dy_all = dy_all(valid);
 T = length(dy_all); t_cum = cumsum(dT_all);
 
-%% AIC & BIC - MLE
-
-k_par = 2;
-
-% Wiener
-par_w = mle(dy_all,Distribution="Normal"); 
-mu_w = par_w(1); sig_w = par_w(2);
-logL_w = sum(log(normpdf(dy_all,mu_w,sig_w)));
-
-% Gamma (shifted distribution)
-shiftgampdf = @(x,a,b,xi) max(realmin,gampdf(x-xi,a,b));
-par_g = mle(dy_all,'pdf',shiftgampdf,'start',[0.1,0,0.2]);
-alpha_g = par_g(1); beta_g = par_g(2);
-logL_g = sum(log(shiftgampdf(dy_all,alpha_g,beta_g,par_g(3))));
-
-% Inverse Gaussian (shifted distribution)
-shiftigpdf = @(x,a,b,xi) max(realmin,pdf('InverseGaussian',x-xi,a,b));
-par_ig = mle(dy_all,'pdf',shiftigpdf,'start',[0.1,0,0.2]);
-mu_ig = par_ig(1); lam_ig = par_ig(2);
-logL_ig = sum(log(shiftigpdf(dy_all, mu_ig, lam_ig,par_ig(3))));
-
-% Compound Poisson (shifted distribution)
-shiftcppdf = @(x,a,b,xi) max(realmin,cpoisson_pdf(x-xi,a,b));
-par_cp = mle(dy_all,'pdf',shiftcppdf,'start',[0.1,0,0.2]);
-lam_j = par_cp(1); mu_j = par_cp(2);
-logL_cp = sum(log(shiftcppdf(dy_all, lam_j, mu_j,par_cp(3))));
-
-% AIC and BIC
-logLs = [logL_w; logL_g; logL_ig; logL_cp];
-AIC = 2*k_par - 2*logLs;
-BIC = k_par*log(T) - 2*logLs;
-[~, AIC_model] = min(AIC);
-[~, BIC_model] = min(BIC);
-
-model_names = {'Wiener','Gamma','Inv. Gaussian','C. Poisson'};
-mle_params = [mu_w, sig_w; alpha_g, beta_g; mu_ig, lam_ig; lam_j, mu_j];
-
 %% IMM-SMC Filter Settings
 
 N_MAX = 400; N_MIN = 20; N_MODELS = 4;
@@ -193,6 +156,43 @@ for t = 1:T
 end
 
 final_model = selected_model(T);
+
+%% AIC & BIC - MLE
+
+k_par = 2;
+
+% Wiener
+par_w = mle(dy_all,Distribution="Normal"); 
+mu_w = par_w(1); sig_w = par_w(2);
+logL_w = sum(log(normpdf(dy_all,mu_w,sig_w)));
+
+% Gamma (shifted distribution)
+shiftgampdf = @(x,a,b,xi) max(realmin,gampdf(x-xi,a,b));
+par_g = mle(dy_all,'pdf',shiftgampdf,'start',[0.1,0,0.2]);
+alpha_g = par_g(1); beta_g = par_g(2);
+logL_g = sum(log(shiftgampdf(dy_all,alpha_g,beta_g,par_g(3))));
+
+% Inverse Gaussian (shifted distribution)
+shiftigpdf = @(x,a,b,xi) max(realmin,pdf('InverseGaussian',x-xi,a,b));
+par_ig = mle(dy_all,'pdf',shiftigpdf,'start',[0.1,0,0.2]);
+mu_ig = par_ig(1); lam_ig = par_ig(2);
+logL_ig = sum(log(shiftigpdf(dy_all, mu_ig, lam_ig,par_ig(3))));
+
+% Compound Poisson (shifted distribution)
+shiftcppdf = @(x,a,b,xi) max(realmin,cpoisson_pdf(x-xi,a,b));
+par_cp = mle(dy_all,'pdf',shiftcppdf,'start',[0.1,0,0.2]);
+lam_j = par_cp(1); mu_j = par_cp(2);
+logL_cp = sum(log(shiftcppdf(dy_all, lam_j, mu_j,par_cp(3))));
+
+% AIC and BIC
+logLs = [logL_w; logL_g; logL_ig; logL_cp];
+AIC = 2*k_par - 2*logLs;
+BIC = k_par*log(T) - 2*logLs;
+[~, AIC_model] = min(AIC);
+[~, BIC_model] = min(BIC);
+
+model_names = {'Wiener','Gamma','Inv. Gaussian','C. Poisson'};
+mle_params = [mu_w, sig_w; alpha_g, beta_g; mu_ig, lam_ig; lam_j, mu_j];
 
 %% Visualization
 
