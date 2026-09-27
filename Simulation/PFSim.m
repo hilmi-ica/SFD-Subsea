@@ -1,4 +1,4 @@
-% PFSim.m for LPPI
+% PFSim.m for RE
 % by Muhammad Hilmi, ITK NTNU
 
 clear all; close all;
