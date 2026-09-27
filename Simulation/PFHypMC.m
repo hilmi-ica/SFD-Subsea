@@ -1,4 +1,4 @@
-% PFHypMC.m for RIE
+% PFHypMC.m for RE
 % by Muhammad Hilmi, ITK NTNU
 
 clear all; close all; clc;
